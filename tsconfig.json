@@ -1,0 +1,14 @@
+/* Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html */
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+
+    "rootDir": "./src",
+    "outDir": "./lib",
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

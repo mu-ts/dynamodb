@@ -1,0 +1,60 @@
+{
+  "name": "@mu-ts/dynamodb",
+  "version": "1.0.0",
+  "description": "Nice sugarry layer over top of DynamoDB to make",
+  "main": "./lib/index",
+  "types": "./lib/index",
+  "author": "matt.filion@gmail.com",
+  "homepage": "https://github.com/mu-ts/s3#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "mocha -r ts-node/register spec/**/*.spec.ts",
+    "clean": "rm -rf coverage lib .nyc_output"
+  },
+  "files": [
+    "lib/*",
+    "README.md",
+    "LICENSE",
+    "CODE_OF_CONDUCT.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mu-ts/s3.git"
+  },
+  "keywords": [
+    "mu-ts",
+    "DynamoDB",
+    "AWS"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/jeremyosborne/packagejsonexample/blob/master/LICENSE.txt"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/mu-ts/logger/issues"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.259.0"
+  },
+  "devDependencies": {
+    "@testdeck/mocha": "^0.3.3",
+    "@tsconfig/node18": "^1.0.1",
+    "@types/chai": "^4.3.4",
+    "@types/node": "^18.11.18",
+    "@types/uuid": "^9.0.0",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "license": "ISC"
+}
