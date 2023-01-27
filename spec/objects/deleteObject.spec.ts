@@ -1,10 +1,8 @@
 import { expect } from 'chai';
 import { suite, test } from '@testdeck/mocha';
 
-import { DeleteObjectCommandOutput } from '@aws-sdk/client-s3';
-
-import { bucket } from '../../src/objects/decorators/bucket';
-import { deleteObject } from '../../src/objects/deleteObject';
+import { table } from '../../src/decorators/table';
+import { deleteItem } from '../../src/commands/deleteItem';
 import { Client } from '../../src/guts/Client';
 import { MockClient } from '../mock/MockClient';
 
@@ -13,38 +11,13 @@ export class DeleteObjectSpec {
 
   @test
   public async noVersionByBucket(): Promise<void> {
-    Client.instance = () => new MockClient({ VersionId: undefined } as DeleteObjectCommandOutput) as any as Client;
-    const versionId: string | undefined = await deleteObject('id', 'some-buket');
-    expect(versionId).to.be.undefined;
-  }
-
-  @test
-  public async versionByBucket(): Promise<void> {
-    Client.instance = () => new MockClient({ VersionId: 'version-1' } as DeleteObjectCommandOutput) as any as Client;
-    const versionId: string | undefined = await deleteObject('id', 'some-buket', 'version-1');
-    expect(versionId).to.equal('version-1');
-  }
-
-  @test
-  public async noVersionByClass(): Promise<void> {
-    @bucket('delete-object-user')
-    class DeleteObjectUser {
+    @table('some-buket')
+    class User{
+      public id: string = 'user-1';
     }
 
-    Client.instance = () => new MockClient({ VersionId: undefined } as DeleteObjectCommandOutput) as any as Client;
-    const versionId: string | undefined = await deleteObject('id', DeleteObjectUser);
-    expect(versionId).to.be.undefined;
+    Client.instance = () => new MockClient({ VersionId: undefined } as any) as any as Client;
+    expect(async () => await deleteItem(User, 'user-1')).to.not.throw();
+    
   }
-
-  @test
-  public async versionByClass(): Promise<void> {
-    @bucket('delete-object-user')
-    class DeleteObjectUser {
-    }
-
-    Client.instance = () => new MockClient({ VersionId: 'version-1' } as DeleteObjectCommandOutput) as any as Client;
-    const versionId: string | undefined = await deleteObject('id', DeleteObjectUser, 'version-1');
-    expect(versionId).to.equal('version-1');
-  }
-
 }

@@ -1,33 +1,16 @@
 import { test, suite } from '@testdeck/mocha';
 import { expect } from 'chai';
-import { BucketRegistry } from '../../../src/guts/BucketRegistry';
+import { TableRegistry } from '../../../src/guts/TableRegistry';
 
 @suite
-export class BucketRegistrySpec {
+export class TableRegistrySpec {
  
   @test
   public register(): void {
-    class BucketRegistryClazz {
+    class TableRegistryClazz {
     }
-    BucketRegistry.register(BucketRegistryClazz, 'test-bucket-registry');
-    expect(BucketRegistry.getBucketName(BucketRegistryClazz)).to.equal('test-bucket-registry');
-    expect(BucketRegistry.getClazz('test-bucket-registry')).to.not.be.undefined;
-  }
-
-  @test
-  public attributes(): void {
-    class BucketRegistryClazz {
-    }
-    BucketRegistry.setAttributes(BucketRegistryClazz, 'name', { ignored: true });
-    expect(BucketRegistry.getAttributes(BucketRegistryClazz, 'name')).to.have.property('ignored').that.equals(true)
-  }
-
-  @test
-  public id(): void {
-    class BucketRegistryClazz {};
-    BucketRegistry.setId(BucketRegistryClazz, 'name', 'uuid');
-    const { attribute, strategy } = BucketRegistry.getId(BucketRegistryClazz);
-    expect(attribute).to.equal('name');
-    expect(strategy).to.equal('uuid');
+    TableRegistry.instance().register(TableRegistryClazz, {tableName: 'test-Table-registry', idAttributes: ['id'] });
+    expect(TableRegistry.instance().getTableName(TableRegistryClazz)).to.equal('test-Table-registry');
+    expect(TableRegistry.instance().getIdAttributes(TableRegistryClazz)[0]).to.equal('id');
   }
 }

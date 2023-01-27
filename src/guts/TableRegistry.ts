@@ -1,6 +1,6 @@
 interface TableLog {
   tableName: string;
-  idAttribute?: string;
+  idAttributes?: string[];
 }
 
 export class TableRegistry {
@@ -27,9 +27,9 @@ export class TableRegistry {
     return this.ledger[name].tableName;
   }
 
-  public getIdAttribute(key: string | Function): string | undefined{
+  public getIdAttributes(key: string | Function): string[] {
     const name: string = this.keyToName(key);
-    return this.ledger[name].idAttribute;
+    return this.ledger[name].idAttributes || ['id'];
   }
 
   public static instance() {
@@ -41,6 +41,7 @@ export class TableRegistry {
   private keyToName(key: string | Function): string {
     if (typeof key === 'string') return this.ledger[key].tableName;
     const name: string = key.constructor.name;
+    return name;
   }
 }
 

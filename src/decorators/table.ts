@@ -1,5 +1,4 @@
-import { BucketRegistry } from '../../guts/BucketRegistry';
-import { TableRegistry } from '../../guts/TableRegistry';
+import { TableRegistry } from '../guts/TableRegistry';
 
 /**
  * Used to mark a class to store its instances in a specific bucket.
@@ -8,9 +7,9 @@ import { TableRegistry } from '../../guts/TableRegistry';
  * @param idAttribute name, to use for resolving the ID value, or dynamo attribute name.
  * @returns 
  */
-export function table(tableName: string, idAttribute?: string): any {
+export function table(tableName: string, ...idAttributes: string[]): any {
   return (target: typeof Function): typeof Function | void => {
-    TableRegistry.instance().register(target, { tableName, idAttribute });
+    TableRegistry.instance().register(target, { tableName, idAttributes });
     return target;
   };
 }
