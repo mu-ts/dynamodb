@@ -23,6 +23,14 @@ class User {
 }
 ```
 
+## No Class No Problem
+
+You can always use the `tableName('user', 'super-special-users')` helper to register a name you want to reference. ie, `getItem('users', 'user-id)`.
+
+Alternatively, you can define the table name in your environment variables and then use the environment variable name as the key. `process.env.USERS_TABLE = 'morespecialer-users'` and then `getItem('USERS_TABLE', 'user-id)`.
+
+In these cases each response is still 'de dynamo-ized' by converting AttributeValue's into their simple form. `hello: { S: 'world' }` becomes `hello: 'world'` for exmaple.
+
 ## Client
 
 There is a singleton that wraps the Client which you can use to reconfigure the client should you need to do so.
@@ -33,7 +41,34 @@ Client.instance().configure();
 
 ## Command Functions
 
-Get an item.
+A handful of utilities for the common cases. Want more, create a merge request with your implementation.
+
+### Query Items
+
+You can use object fragments to create lazy queries where they apply.
+
+```
+import { query } from '@mu-ts/dynamodb';
+
+const expression: User = {
+  group: 'blue'
+}
+const users: User[] = await query(User, expression);
+```
+
+For complex conditions you can also pass in your own `QueryCommandInput` instance. _The table name will be added to the query command input passed in, even if you provide it._
+
+```
+import { QueryCommandInput } from '@aws-sdk/client-dynamodb';
+import { query } from '@mu-ts/dynamodb';
+
+const expression: QueryCommandInput = {
+  Expression: "Thing > 100"
+}
+const users: User[] = await query(User, expression);
+```
+
+### Get an item.
 
 ```
 import { getItem } from '@mu-ts/dynamodb';
@@ -41,7 +76,7 @@ import { getItem } from '@mu-ts/dynamodb';
 const user: User = await getItem(User, 'timmy', 36);
 ```
 
-Put an item.
+### Put an item.
 
 ```
 import { putItem } from '@mu-ts/dynamodb';
@@ -50,7 +85,7 @@ const user: User = await putItem(User, 'timmy', 36);
 
 ```
 
-Delete an item.
+### Delete an item.
 
 ```
 import { deleteItem } from '@mu-ts/dynamodb';
@@ -58,7 +93,9 @@ import { deleteItem } from '@mu-ts/dynamodb';
 await deleteItem(User, 'timmy', 36);
 ```
 
-Update an item uses the PutItem command which only updates specific attributes, for a record matching the corresponding hash key. If no hash key matches then a new item is created.
+### Update an item 
+
+Uses the PutItem command which only updates specific attributes, for a record matching the corresponding hash key. If no hash key matches then a new item is created.
 
 The value returned is a merging together of the values passed in as well as the old values returned back from DynamoDB.
 
