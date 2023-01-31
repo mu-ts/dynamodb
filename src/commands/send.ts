@@ -7,6 +7,5 @@ import { ServiceOutputTypes } from "@aws-sdk/client-dynamodb";
  * @param command object to directly send.
  */
 export async function send(command: any): Promise<ServiceOutputTypes> {
-  const output: ServiceOutputTypes = await Client.instance().send(command);
-  return output;
+  return await Client.instance().send(command);
 }
