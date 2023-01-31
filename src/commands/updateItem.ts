@@ -11,8 +11,8 @@ import { TableRegistry } from '../guts/TableRegistry';
  * @param table name or class to persist object to.
  * @param input
  */
-export async function updateItem<T>(table: Function | string, input: UpdateItemCommandInput): Promise<UpdateItemCommandOutput> {
-  input.TableName = TableRegistry.instance().getTableName(table);
+export async function updateItem<T>(input: UpdateItemCommandInput, table?: Function | string): Promise<UpdateItemCommandOutput> {
+  if (!input.TableName && table) input.TableName = TableRegistry.instance().getTableName(table);
 
   return await Client.instance().send<UpdateItemCommand, UpdateItemCommandOutput>(new UpdateItemCommand(input));
 }

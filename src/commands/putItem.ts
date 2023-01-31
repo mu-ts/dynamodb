@@ -11,9 +11,9 @@ import { TableRegistry } from '../guts/TableRegistry';
  * @param table name or class to persist object to.
  * @param input
  */
-export async function putItem<T>(table: Function | string, input: PutItemCommandInput): Promise<T | undefined> {
-  input.TableName = TableRegistry.instance().getTableName(table);
-  input.ReturnValues = 'ALL_OLD';
+export async function putItem<T>(input: PutItemCommandInput, table?: Function | string): Promise<T | undefined> {
+  if (!input.TableName && table) input.TableName = TableRegistry.instance().getTableName(table);
+  if (!input.ReturnValues) input.ReturnValues = 'ALL_OLD';
 
   const output: PutItemCommandOutput = await Client.instance().send<PutItemCommand, PutItemCommandOutput>(new PutItemCommand(input));
   const totalObject: Record<string, AttributeValue> = { ...output.Attributes, ...input.Item };

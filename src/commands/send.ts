@@ -1,5 +1,5 @@
-import { Client } from '../guts/Client';
 import { ServiceOutputTypes } from "@aws-sdk/client-dynamodb";
+import { Client } from '../guts/Client';
 
 /**
  * Light sprinkle of sugar around DynamoDBClient.send.

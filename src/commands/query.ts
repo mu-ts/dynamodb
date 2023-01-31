@@ -7,8 +7,8 @@ import { TableRegistry } from '../guts/TableRegistry';
  * @param table to execute a 'query' on.
  * @param input
  */
-export async function query(table: Function | string, input: QueryCommandInput): Promise<QueryCommandOutput> {
-  input.TableName = TableRegistry.instance().getTableName(table);
+export async function query(input: QueryCommandInput, table?: Function | string): Promise<QueryCommandOutput> {
+  if (!input.TableName && table) input.TableName = TableRegistry.instance().getTableName(table);
 
   return await Client.instance().send<QueryCommand, QueryCommandOutput>(new QueryCommand(input));
 }

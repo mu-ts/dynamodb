@@ -10,8 +10,8 @@ import { TableRegistry } from '../guts/TableRegistry';
  * @param table to execute the 'get' against, can be the key of a registered table, class that has been decorated to a table, event property to locate the table name, or it will be used directly as the table name.
  * @param input
  */
-export async function getItem<T>(table: Function | string, input: GetItemCommandInput): Promise<T | undefined> {
-  input.TableName = TableRegistry.instance().getTableName(table);
+export async function getItem<T>(input: GetItemCommandInput, table?: Function | string): Promise<T | undefined> {
+  if (!input.TableName && table) input.TableName = TableRegistry.instance().getTableName(table);
 
   const output: GetItemCommandOutput = await Client.instance().send<GetItemCommand, GetItemCommandOutput>(new GetItemCommand(input));
   return output.Item ? (unmarshall(output.Item) as T) : undefined;
