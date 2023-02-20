@@ -3,6 +3,7 @@ export * from './commands/deleteItem';
 export * from './commands/getItem';
 export * from './commands/putItem';
 export * from './commands/query';
+export * from './commands/scan';
 export * from './commands/send';
 export * from './commands/updateItem';
 
