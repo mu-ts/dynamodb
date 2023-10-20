@@ -1,20 +1,17 @@
-import { expect } from 'chai';
-import { suite, test } from '@testdeck/mocha';
+import { expect } from 'chai'
+import { describe, it } from 'mocha'
 
-import { table } from '../../src/decorators/table';
-import { TableRegistry } from '../../src/guts/TableRegistry';
+import { TableService } from '../../src/sugar/guts/TableService'
 
-@suite
-export class TableSpec {
-  @test
-  public decorate(): void {
-   
-    @table('test')
+import { table } from '../../src/decorators/table'
+
+describe('@serializable', () => {
+  it('to decorate class', () => {
+    
+    @table('x')
     class User {}
 
-    const bucketName: string = TableRegistry.instance().getTableName(User);
+    expect(User[TableService.PREFIX]).to.have.property('table').that.equals('x')
+  })
+})
 
-    expect(bucketName).to.equal('test');
-  }
-
-}
